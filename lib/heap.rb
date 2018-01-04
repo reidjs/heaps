@@ -9,14 +9,24 @@ class BinaryMinHeap
 
   def count
   end
-
+  #extract the min value
+  #swap to rightmost 
   def extract
+   t = @store[-1]
+   @store[-1] = @store[0]
+   @store[0] = t
+   val = @store.pop
+   BinaryMinHeap.heapify_down(@store, 0)
+   val 
   end
 
   def peek
+    @store[0]
   end
 
   def push(val)
+    @store.push(val)
+    BinaryMinHeap.heapify_up(@store, @store.length-1)
   end
 
   public
@@ -39,7 +49,7 @@ class BinaryMinHeap
     children_idxs = self.child_indices(len, parent_idx).map{|v| array[v]}
     smaller_child_idx = array.index(children_idxs.min)
     return array if smaller_child_idx.nil?
-    if array[parent_idx] > array[smaller_child_idx]
+    if prc && prc.call(array[parent_idx], array[smaller_child_idx]) || array[parent_idx] > array[smaller_child_idx]
       t = array[parent_idx]
       array[parent_idx] = array[smaller_child_idx]
       array[smaller_child_idx] = t
