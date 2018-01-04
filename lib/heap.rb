@@ -8,6 +8,7 @@ class BinaryMinHeap
   end
 
   def count
+    @store.length
   end
   #extract the min value
   #swap to rightmost 
