@@ -6,11 +6,6 @@ class Array
     while self.length > 0 
       heap.push(self.pop)
     end 
-    # self.each do |val|
-    #   heap.push(val)
-    # end 
-    # binding.pry
-    # sorted = []
     while heap.count > 0
       self.push(heap.extract)
     end 
