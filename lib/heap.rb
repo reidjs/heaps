@@ -1,4 +1,5 @@
 require 'pry'
+require 'byebug'
 class BinaryMinHeap
   attr_reader :store, :prc
 
@@ -46,16 +47,55 @@ class BinaryMinHeap
     (child_index - 1) / 2
   end
 
+  # def self.heapify_down(array, parent_idx, len = array.length, &prc)
+  #   prc ||= Proc.new {|a, b| a <=> b }
+  #   # children_idxs = self
+  #   #                   .child_indices(len, parent_idx)
+  #   #                   .map{|v| array[v]}
+  #   # smaller_child_idx = array.index(children_idxs.min)
+  #   # return array if children_idxs.empty?
+  #   # if children_idxs.length == 1 || prc.call(children_idxs[0], children_idxs[1]) < 0
+  #   #   child_idx = children_idxs[0]
+  #   # else 
+  #   #   child_idx = children_idxs[1]
+  #   # end 
+  #   # binding.pry
+  #   children_idxs = nil
+  #   while  children_idxs.nil? || !children_idxs.empty?
+  #     children_idxs = child_indices(len, parent_idx)
+  #     if children_idxs.length == 1 || prc.call(children_idxs[0], children_idxs[1]) < 0
+  #       child_idx = children_idxs[0]
+  #     else 
+  #       child_idx = children_idxs[1]
+  #     end 
+  #     if prc.call(array[parent_idx], array[child_idx]) > 0
+  #       t = array[parent_idx]
+  #       array[parent_idx] = array[child_idx]
+  #       array[child_idx] = t
+  #       # self.heapify_down(array, child_idx, len, &prc)
+  #     end 
+  #   end 
+  #   array
+  # end 
+
   def self.heapify_down(array, parent_idx, len = array.length, &prc)
     children_idxs = self.child_indices(len, parent_idx).map{|v| array[v]}
     smaller_child_idx = array.index(children_idxs.min)
     return array if smaller_child_idx.nil?
-    if prc && prc.call(array[parent_idx], array[smaller_child_idx]) || array[parent_idx] > array[smaller_child_idx]
+    # binding.pry 
+    # if prc 
+    #   prc.call(array[smaller_child_idx])
+
+    # end 
+    if (!prc.nil? && prc.call(array[parent_idx], array[smaller_child_idx]) > 0) || (prc.nil? && (array[parent_idx] > array[smaller_child_idx]))
       t = array[parent_idx]
       array[parent_idx] = array[smaller_child_idx]
       array[smaller_child_idx] = t
+      # binding.pry
       self.heapify_down(array, smaller_child_idx, len, &prc)
+      # byebug
     end 
+    # prc ? array.reverse : array
     array
   end
 
